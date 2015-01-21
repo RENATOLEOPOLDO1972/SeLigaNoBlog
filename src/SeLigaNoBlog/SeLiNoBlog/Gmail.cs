@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Configuration;
+using System.Net;
 using System.Net.Mail;
 
 namespace SeLigaNoBlog
@@ -7,17 +8,21 @@ namespace SeLigaNoBlog
     {
         public void EnviarEmail(Usuario usuario, Artigo artigo)
         {
-            var smtp = new SmtpClient("smtp.gmail.com", 25);
-            smtp.Credentials = new NetworkCredential("username", "senha");
+            var smtp = Smtp.ObterPorConfig();
 
-            var mail = new MailMessage();
+            var smtpClient = new SmtpClient(smtp.Servidor, smtp.Porta);
+            smtpClient.Credentials = new NetworkCredential(smtp.Login, smtp.Senha);
 
-            mail.From = new MailAddress("recomendador@gmail.com", "Recomendador");
-            mail.Subject = "Recomendação de Artigo";
+            var mail = new MailMessage()
+            {
+                From = new MailAddress(smtp.Email, smtp.Nome),
+                Subject = "Recomendação de Artigo",
+                Body = artigo.Url
+            };
+
             mail.To.Add(new MailAddress(usuario.Email, usuario.Nome));
-            mail.Body = artigo.Url;
 
-            smtp.Send(mail);
+            smtpClient.Send(mail);
         }
     }
 }
