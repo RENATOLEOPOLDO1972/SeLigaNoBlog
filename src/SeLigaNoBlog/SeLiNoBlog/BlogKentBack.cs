@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using TNX.RssReader;
 
-namespace SeLigaNoBlog.Playground
+namespace SeLigaNoBlog
 {
-    class BlogKentBack : Blog
+    public class BlogKentBack : Blog
     {
         public BlogKentBack()
             : base("http://www.threeriversinstitute.org/rss2.xml")
