@@ -10,18 +10,18 @@ namespace SeLigaNoBlog
     {
         public void Executar()
         {
-            var usuario = new Usuario();
-
-            usuario.Nome = "Denis";
-            usuario.Email = "denisferrari@azys.com.br";
+            var smtp = Smtp.ObterPorConfig();
+            var usuario = new Usuario("Denis", "dth");
 
             IBlog blog = new BlogMartinFowler();
 
             var artigo = blog.ObterArtigo();
 
-            var servicoEmail = new Gmail();
+            var servicoEmail = new Gmail(smtp);
 
-            servicoEmail.EnviarEmail(usuario, artigo);
+            var mensagem = new MensagemEmail(usuario, artigo);
+
+            servicoEmail.EnviarEmail(mensagem);
         }
     }
 }

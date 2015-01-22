@@ -6,23 +6,37 @@ namespace SeLigaNoBlog
 {
     public class Gmail
     {
-        public void EnviarEmail(Usuario usuario, Artigo artigo)
+        public const string HOST = "smtp.gmail.com";
+
+        public const int PORT = 587;
+
+        public Smtp Smtp { get; protected set; }
+
+        public Gmail(Smtp smtp)
         {
-            var smtp = Smtp.ObterPorConfig();
+            this.Smtp = smtp;
+        }
 
-            var smtpClient = new SmtpClient(smtp.Servidor, smtp.Porta);
-            smtpClient.Credentials = new NetworkCredential(smtp.Login, smtp.Senha);
+        public void EnviarEmail(MensagemEmail email)
+        {
+            var smtpClient = this.ObterSmtpClient();
 
-            var mail = new MailMessage()
-            {
-                From = new MailAddress(smtp.Email, smtp.Nome),
-                Subject = "Recomendação de Artigo",
-                Body = artigo.Url
-            };
+            var mail = email.ObterMailMessage();
 
-            mail.To.Add(new MailAddress(usuario.Email, usuario.Nome));
+            mail.From = new MailAddress(this.Smtp.Login, this.Smtp.Nome);
 
             smtpClient.Send(mail);
+        }
+
+        public SmtpClient ObterSmtpClient()
+        {
+            return new SmtpClient(HOST, PORT)
+            {
+                Credentials = new NetworkCredential(this.Smtp.Login, this.Smtp.Senha),
+                EnableSsl = true,
+                UseDefaultCredentials = false,
+                DeliveryMethod = SmtpDeliveryMethod.Network
+            };
         }
     }
 }

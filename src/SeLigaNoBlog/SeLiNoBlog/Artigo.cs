@@ -8,13 +8,17 @@ namespace SeLigaNoBlog
 {
     public class Artigo
     {
-        public string Titulo { get; set; }
+        public string Titulo { get; protected set; }
 
-        public string Url { get; set; }
+        public string Url { get; protected set; }
 
         public Artigo(string titulo, string url)
         {
-            // TODO: Validação dos params.
+            if (string.IsNullOrEmpty(titulo))
+                throw new ArgumentNullException("titulo");
+
+            if (string.IsNullOrEmpty(url))
+                throw new ArgumentNullException("url");  
 
             Titulo = titulo;
             Url = url;
