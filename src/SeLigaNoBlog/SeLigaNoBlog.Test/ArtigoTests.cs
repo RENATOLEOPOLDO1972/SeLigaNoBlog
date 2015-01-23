@@ -17,7 +17,7 @@ namespace SeLigaNoBlog.Test
             var artigo = new Artigo(titulo, url);
             
             // Assert
-            Assert.AreEqual(titulo, artigo.Titulo);
+            Assert.AreEqual(titulo, artigo.Titulo); 
             Assert.AreEqual(url, artigo.Url);
         }
 
