@@ -7,8 +7,6 @@ namespace SeLigaNoBlog.Playground
     {
         static void Main(string[] args)
         {
-            //Console.WriteLine();
-
             var servico = new ServicoRecomendacao();
 
             servico.Executar(); 
